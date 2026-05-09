@@ -20,7 +20,7 @@ case class ConversationState(
     preferences: Map[String, String]
 )
 
-val allRecipes: List[Recipe] = List(
+/* val allRecipes: List[Recipe] = List(
     Recipe("Spaghetti Aglio e Olio", "Italian", "Easy", List("Spaghetti", "Garlic", "Extra Virgin Olive Oil", "Red Pepper Flakes", "Fresh Parsley", "Parmesan Cheese"), List("Vegetarian"), 15),
     Recipe("Chicken Tikka Masala", "Indian", "Medium", List("Chicken Breast", "Yogurt", "Garam Masala", "Turmeric", "Cumin", "Tomato Puree", "Heavy Cream", "Ginger", "Garlic"), List("High-Protein", "Gluten-Free"), 45),
     Recipe("Vegan Buddha Bowl", "Global", "Easy", List("Quinoa", "Chickpeas", "Spinach", "Sweet Potato", "Avocado", "Tahini", "Lemon Juice"), List("Vegan", "Gluten-Free", "Healthy"), 25),
@@ -41,4 +41,4 @@ val allRecipes: List[Recipe] = List(
     Recipe("Classic Hummus", "Middle Eastern", "Easy", List("Chickpeas", "Tahini", "Garlic", "Lemon Juice", "Olive Oil", "Cumin"), List("Vegan", "Gluten-Free"), 15),
     Recipe("Eggs Benedict", "American", "Hard", List("English Muffin", "Poached Eggs", "Canadian Bacon", "Butter", "Egg Yolks", "Lemon Juice"), List("High-Protein"), 30),
     Recipe("French Onion Soup", "French", "Medium", List("Yellow Onions", "Beef Broth", "Gruyère Cheese", "Baguette", "Thyme", "Butter", "Cognac"), List("High-Protein"), 90)
-)
+) */
