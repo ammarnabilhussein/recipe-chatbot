@@ -34,19 +34,13 @@ object RecommendationEngine {
 ) 
 
   
-  // 1. RETURN CURRENT USER PREFERENCES
-  
 
   def getUserPreferences(
       state: ConversationState
   ): Map[String, String] = {
 
-    state.preferences
+    state.preferences 
   }
-
-
-  
-  // 2. UPDATE PREFERENCES IMMUTABLY
   
 
   def updatePreferences(
@@ -60,11 +54,9 @@ object RecommendationEngine {
 
 
 
-  // 3. FILTER RECIPES BY PREFERENCES
- 
 
   def recommend(
-      preferences: Map[String, String],
+      preferences: Map[String, String], 
       recipes: List[Recipe]
   ): List[Recipe] = {
 
@@ -93,13 +85,9 @@ object RecommendationEngine {
           )
       )
 
-      // sort shortest preparation time first
+      
       .sortBy(_.prepTime)
   }
-
-
-
-  // 4. EXPLAIN WHY RECIPE WAS RECOMMENDED
   
 
   def explainRecommendation(
@@ -112,10 +100,6 @@ object RecommendationEngine {
   }
 
 
-  
-  // 5. GET TOP 3 RECOMMENDATIONS
-  
-
   def getTopRecommendations(
       preferences: Map[String, String]
   ): List[Recipe] = {
@@ -126,9 +110,6 @@ object RecommendationEngine {
 
 
  
-  // 6. FORMAT RECOMMENDATIONS FOR CHATBOT
-  
-
   def formatRecommendations(
       recipes: List[Recipe]
   ): String = {
