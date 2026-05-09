@@ -1,27 +1,150 @@
-object Reccomendation_Engine{
-// 1. Retrieves stored preferences
-  def getUserPreferences(): Map[String, String] = {
-    // For now, you can return a hardcoded Map to test your logic
-    Map("cuisine" -> "Italian", "fitness" -> "High")
+/* case class Recipe(
+    name: String,
+    cuisine: String,
+    difficulty: String,
+    ingredients: List[String],
+    dietaryTags: List[String], 
+    prepTime: Int
+) */ 
+
+
+object RecommendationEngine {
+
+    val allRecipes: List[Recipe] = List(
+    Recipe("Spaghetti Aglio e Olio", "Italian", "Easy", List("Spaghetti", "Garlic", "Extra Virgin Olive Oil", "Red Pepper Flakes", "Fresh Parsley", "Parmesan Cheese"), List("Vegetarian"), 15),
+    Recipe("Chicken Tikka Masala", "Indian", "Medium", List("Chicken Breast", "Yogurt", "Garam Masala", "Turmeric", "Cumin", "Tomato Puree", "Heavy Cream", "Ginger", "Garlic"), List("High-Protein", "Gluten-Free"), 45),
+    Recipe("Vegan Buddha Bowl", "Global", "Easy", List("Quinoa", "Chickpeas", "Spinach", "Sweet Potato", "Avocado", "Tahini", "Lemon Juice"), List("Vegan", "Gluten-Free", "Healthy"), 25),
+    Recipe("Classic Beef Tacos", "Mexican", "Easy", List("Ground Beef", "Taco Shells", "Lettuce", "Tomato", "Cheddar Cheese", "Cumin", "Chili Powder", "Sour Cream"), List("High-Protein"), 20),
+    Recipe("Miso Soup", "Japanese", "Easy", List("Dashi Stock", "Miso Paste", "Tofu", "Green Onions", "Wakame Seaweed"), List("Vegetarian", "Low-Calorie", "Gluten-Free"), 10),
+    Recipe("Caprese Salad", "Italian", "Easy", List("Fresh Mozzarella", "Tomatoes", "Fresh Basil", "Balsamic Glaze", "Extra Virgin Olive Oil", "Salt"), List("Vegetarian", "Gluten-Free", "Keto"), 10),
+    Recipe("Red Lentil Dal", "Indian", "Easy", List("Red Lentils", "Coconut Milk", "Onion", "Turmeric", "Cumin Seeds", "Garlic", "Coriander"), List("Vegan", "Gluten-Free"), 30),
+    Recipe("Greek Salad", "Greek", "Easy", List("Cucumber", "Cherry Tomatoes", "Kalamata Olives", "Feta Cheese", "Red Onion", "Dried Oregano", "Olive Oil"), List("Vegetarian", "Gluten-Free", "Low-Carb"), 15),
+    Recipe("Shakshuka", "Middle Eastern", "Medium", List("Eggs", "Canned Tomatoes", "Bell Peppers", "Onion", "Garlic", "Paprika", "Cumin", "Feta Cheese"), List("Vegetarian", "High-Protein"), 25),
+    Recipe("Shrimp Pad Thai", "Thai", "Hard", List("Rice Noodles", "Shrimp", "Bean Sprouts", "Peanuts", "Eggs", "Tamarind Paste", "Fish Sauce", "Lime"), List("Dairy-Free", "High-Protein"), 35),
+    Recipe("Baked Falafel", "Middle Eastern", "Medium", List("Canned Chickpeas", "Fresh Parsley", "Fresh Cilantro", "Garlic", "Cumin", "Coriander", "Flour"), List("Vegan", "Vegetarian"), 40),
+    Recipe("Classic Ratatouille", "French", "Medium", List("Eggplant", "Zucchini", "Bell Peppers", "Tomatoes", "Onion", "Garlic", "Thyme", "Olive Oil"), List("Vegan", "Vegetarian", "Gluten-Free"), 60),
+    Recipe("Ginger Beef Stir-fry", "Chinese", "Easy", List("Flank Steak", "Broccoli", "Ginger", "Soy Sauce", "Sesame Oil", "Garlic", "Cornstarch"), List("High-Protein", "Dairy-Free"), 20),
+    Recipe("Buttermilk Pancakes", "American", "Easy", List("Flour", "Buttermilk", "Egg", "Butter", "Baking Powder", "Sugar", "Maple Syrup"), List("Vegetarian"), 20),
+    Recipe("Guacamole", "Mexican", "Easy", List("Avocados", "Lime Juice", "Cilantro", "Red Onion", "Jalapeño", "Salt"), List("Vegan", "Gluten-Free", "Keto"), 10),
+    Recipe("Mediterranean Quinoa Salad", "Mediterranean", "Easy", List("Quinoa", "Cucumber", "Chickpeas", "Parsley", "Lemon Vinaigrette", "Cherry Tomatoes"), List("Vegan", "Gluten-Free", "Healthy"), 20),
+    Recipe("Mushroom Risotto", "Italian", "Hard", List("Arborio Rice", "Mushrooms", "Vegetable Broth", "White Wine", "Shallots", "Parmesan Cheese", "Butter"), List("Vegetarian", "Gluten-Free"), 45),
+    Recipe("Classic Hummus", "Middle Eastern", "Easy", List("Chickpeas", "Tahini", "Garlic", "Lemon Juice", "Olive Oil", "Cumin"), List("Vegan", "Gluten-Free"), 15),
+    Recipe("Eggs Benedict", "American", "Hard", List("English Muffin", "Poached Eggs", "Canadian Bacon", "Butter", "Egg Yolks", "Lemon Juice"), List("High-Protein"), 30),
+    Recipe("French Onion Soup", "French", "Medium", List("Yellow Onions", "Beef Broth", "Gruyère Cheese", "Baguette", "Thyme", "Butter", "Cognac"), List("High-Protein"), 90)
+) 
+
+  
+  // 1. RETURN CURRENT USER PREFERENCES
+  
+
+  def getUserPreferences(
+      state: ConversationState
+  ): Map[String, String] = {
+
+    state.preferences
   }
 
-  // 2. Immutably updates preferences
-  def updatePreferences(current: Map[String, String], key: String, value: String): Map[String, String] = {
-    current + (key -> value) 
+
+  
+  // 2. UPDATE PREFERENCES IMMUTABLY
+  
+
+  def updatePreferences(
+      preferences: Map[String, String],
+      key: String,
+      value: String
+  ): Map[String, String] = {
+
+    preferences + (key -> value)
   }
 
-  // 3. Filters and ranks using higher-order functions
-  def recommend(preferences: Map[String, String], data: List[Recipe]): List[Recipe] = {
-    data.filter(r => r.cuisine == preferences.getOrElse("cuisine", ""))
-        .sortBy(_.prepTime) // Example of using sortBy
+
+
+  // 3. FILTER RECIPES BY PREFERENCES
+ 
+
+  def recommend(
+      preferences: Map[String, String],
+      recipes: List[Recipe]
+  ): List[Recipe] = {
+
+    recipes
+      .filter(recipe =>
+
+        preferences.get("cuisine")
+          .forall(prefCuisine =>
+            recipe.cuisine.equalsIgnoreCase(prefCuisine)
+          )
+
+        &&
+
+        preferences.get("difficulty")
+          .forall(prefDifficulty =>
+            recipe.difficulty.equalsIgnoreCase(prefDifficulty)
+          )
+
+        &&
+
+        preferences.get("diet")
+          .forall(prefDiet =>
+            recipe.dietaryTags.exists(tag =>
+              tag.equalsIgnoreCase(prefDiet)
+            )
+          )
+      )
+
+      // sort shortest preparation time first
+      .sortBy(_.prepTime)
   }
 
-  // 4. Generates a human-readable string
-  def explainRecommendation(item: Recipe): String = {
-    s"This recipe matches your preference for ${item.cuisine}!"
+
+
+  // 4. EXPLAIN WHY RECIPE WAS RECOMMENDED
+  
+
+  def explainRecommendation(
+      recipe: Recipe
+  ): String = {
+
+    s"${recipe.name} is a great choice because it is " +
+    s"${recipe.difficulty.toLowerCase} to make " +
+    s"and only takes ${recipe.prepTime} minutes."
   }
 
 
+  
+  // 5. GET TOP 3 RECOMMENDATIONS
+  
 
+  def getTopRecommendations(
+      preferences: Map[String, String]
+  ): List[Recipe] = {
+
+    recommend(preferences, allRecipes)
+      .take(3)
+  }
+
+
+ 
+  // 6. FORMAT RECOMMENDATIONS FOR CHATBOT
+  
+
+  def formatRecommendations(
+      recipes: List[Recipe]
+  ): String = {
+
+    if (recipes.isEmpty) {
+
+      "Sorry, I couldn't find matching recipes."
+
+    } else {
+
+      recipes
+        .map(recipe =>
+          explainRecommendation(recipe)
+        )
+        .mkString("\n")
+    }
+  }
 
 }
