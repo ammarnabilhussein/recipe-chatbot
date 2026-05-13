@@ -28,10 +28,12 @@ object conversationMemory{
         context.history.filter(_.sequenceNumber > (context.history.size - n))
     }
 
-    def detectRepeatedQuery(input : String, history : List[InteractionEntry]): Boolean = {
-        val splitWords = input.split(" ").toList
-        history.filter(x => splitWords.filter(y => x.userInput.contains(y)).nonEmpty).nonEmpty
-    }
+    def detectRepeatedQuery(input: String, history: List[InteractionEntry]): Boolean = {
+    val stopWords = List("i", "a", "the", "is", "it", "do", "you", "what", "have", "we", "me", "my", "can", "to", "in", "of", "and", "or", "for", "suggest", "recommend", "something", "topics", "discussed")
+    val splitWords = input.split(" ").toList.filter(w => w.length > 3 && !stopWords.contains(w.toLowerCase))
+    if (splitWords.isEmpty) false
+    else history.filter(x => splitWords.filter(y => x.userInput.contains(y)).nonEmpty).nonEmpty
+}
 
     def extractTopics(history : List[InteractionEntry],acc : List[String]): List[String] = history match{
         case Nil => acc

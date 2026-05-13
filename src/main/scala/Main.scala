@@ -8,10 +8,8 @@ object Main extends App {
     case _ => {
 
       val response = if(conversationMemory.detectRepeatedQuery(input,memory.history)) {
-        println("You asked about this before! Here's what I said...")
         val getHistorySize = conversationMemory.getConversationHistory(memory).size
-        println(memory.history(getHistorySize - 1).botResponse)
-        "you was asking again about " + memory.history(getHistorySize - 1).userInput
+        "You asked about this before! Here's what I said...\n" + memory.history(getHistorySize - 1).botResponse
 
       } else{
         coreChatBot.handleUserInput(input,memory)
@@ -24,7 +22,7 @@ object Main extends App {
         case "negative" => "I hope I can cheer you up! "
         case _ => ""
       }
-      
+
       val updatedPrefs : Map[String,String] = input.toLowerCase() match {
       case input if input.contains("vegan") => memory.preferences + ("diet" -> "vegan")
       case input if input.contains("vegetarian") => memory.preferences + ("diet" -> "vegetarian")
