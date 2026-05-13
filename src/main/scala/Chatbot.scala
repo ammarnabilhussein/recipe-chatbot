@@ -28,12 +28,15 @@ object coreChatBot{
             case x if x.contains("topics") || x.contains("what topics") => val topics = conversationMemory.extractTopics(memory.history, List())
             "We've discussed: " + topics.mkString(", ")
 
-            case x if x.contains("most discussed") || x.contains("popular") => val topics = conversationMemory.getMostDiscussedTopics(memory.history)
-            topics.map(t => s"${t._1}: ${t._2} times").mkString("\n")
+            case x if x.contains("most discussed") || x.contains("popular") => {
+                val topics = conversationMemory.getMostDiscussedTopics(memory.history)
+                topics.map(t => s"${t._1}: ${t._2} times").mkString("\n")
+            }
 
-            case x if x.contains("recent") || x.contains("last") => val last = conversationMemory.getLastNInteractions(3, memory).map(e => s"You: ${e.userInput}\nMe: ${e.botResponse}")
+            case x if x.contains("recent") || x.contains("last") => {val last = conversationMemory.getLastNInteractions(3, memory).map(e => s"You: ${e.userInput}\nMe: ${e.botResponse}")
             last.mkString("\n---\n")
-
+            }
+            
             case _ => "I'm sorry, I didn't understand that. Can you please rephrase your request?" // case for fallbacks
         }
     }

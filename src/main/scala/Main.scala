@@ -2,9 +2,6 @@ import scala.io.StdIn
 
 object Main extends App {
 
-  val memo = ConversationState(List(),Map.empty[String,String])
-  println("Hello ")
-  val first = StdIn.readLine()
 
   def start(input : String,memory : ConversationState): Unit = input match {
     case input if (input == "quit") => ()
@@ -17,7 +14,7 @@ object Main extends App {
         "you was asking again about " + memory.history(getHistorySize - 1).userInput
 
       } else{
-        coreChatBot.handleUserInput(input)
+        coreChatBot.handleUserInput(input,memory)
 
       }
 
@@ -31,15 +28,14 @@ object Main extends App {
       println(tone + response)
 
       val updatedPrefs : Map[String,String] = input.toLowerCase() match {
-        case input if input.contains("vegan") => RecommendationEngine.updatePreferences(memory.preferences, "diet", "vegan")
-        case input if input.contains("vegetarian") => RecommendationEngine.updatePreferences(memory.preferences, "diet", "vegetarian")
-        case input if input.contains("gluten-free") => RecommendationEngine.updatePreferences(memory.preferences, "diet", "gluten-free")
-        case input if input.contains("dairy-free") => RecommendationEngine.updatePreferences(memory.preferences, "diet", "dairy-free")
-        case input if input.contains("nut-free") => RecommendationEngine.updatePreferences(memory.preferences, "diet", "nut-free")
-        case input if input.contains("high-protein") => RecommendationEngine.updatePreferences(memory.preferences, "diet", "high-protein")
-        case input if input.contains("low-carb") => RecommendationEngine.updatePreferences(memory.preferences, "diet", "low-carb")
-
-      }
+      case input if input.contains("vegan") => memory.preferences + ("diet" -> "vegan")
+      case input if input.contains("vegetarian") => memory.preferences + ("diet" -> "vegetarian")
+      case input if input.contains("gluten-free") => memory.preferences + ("diet" -> "gluten-free")
+      case input if input.contains("dairy-free") => memory.preferences + ("diet" -> "dairy-free")
+      case input if input.contains("high-protein") => memory.preferences + ("diet" -> "high-protein")
+      case input if input.contains("low-carb") => memory.preferences + ("diet" -> "low-carb")
+      case _ => memory.preferences
+}
 
       val newPreference = ConversationState(memory.history,updatedPrefs)
 
@@ -49,6 +45,9 @@ object Main extends App {
 
   }
 
+  println("Hello")
+  val memo = ConversationState(List(),Map.empty[String,String])
+  val first = StdIn.readLine()
   start(first,memo)
 
   
