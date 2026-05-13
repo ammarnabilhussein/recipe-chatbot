@@ -3,10 +3,17 @@ object conversationMemory{
     def logInteraction(userInput : String, botResponse : String, context : ConversationState) : ConversationState = {
         val sequenceNumber = context.history.size + 1
         val timestamp = java.time.LocalDateTime.now().toString
-        val intention = userInput match  {
+        val intention = userInput.toLowerCase() match  {
             case userInput if (userInput.contains("hi") || userInput.contains("hello") || userInput.contains("hi")) || userInput.contains("good") => "greeting"
             case userInput if (userInput.contains("suggest something") || userInput.contains("what do you recommend") || userInput.contains("what do you recommend")) => "recommendation"
+            case x if x.contains("vegan") || x.contains("vegetarian") || x.contains("prefer") || x.contains("gluten-free") || 
+            x.contains("dairy-free") || x.contains("nut-free") || x.contains("high-ptotein") || x.contains("low-carb") => "preference update"
+            case x if x.contains("protein") || x.contains("carbs") || x.contains("fat") || x.contains("calories") => "nutrition query"
+            case x if x.contains("summarize") || x.contains("summary") || x.contains("what have we talked") => "summary request"
+            case x if x.contains("topics") || x.contains("what topics") => "discussed topics so far"
+            case x if x.contains("most discussed") || x.contains("popular") => "most discussed"
             case _ => "general"
+
         }
     
         val newExchange = InteractionEntry(sequenceNumber,timestamp,userInput,botResponse,intention)

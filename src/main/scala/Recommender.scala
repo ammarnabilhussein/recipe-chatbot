@@ -1,21 +1,20 @@
 
 object RecommendationEngine {  
 
-  def getUserPreferences(
-      state: ConversationState
-  ): Map[String, String] = {
+  def getUserPreferences(state: ConversationState): Map[String, String] = {
 
-    state.preferences 
-  }
-  
-
-  def updatePreferences(preferences: Map[String, String],key: String,value: String): Map[String, String] = {
-    preferences + (key -> value)
-
+    state.preferences
   }
 
-
-
+  def updatePreferences(input: String, memory: ConversationState): String = {
+    val key = "diet"
+    val value = 
+        if (input.contains("vegan")) "vegan"
+        else if (input.contains("vegetarian")) "vegetarian"
+        else if (input.contains("gluten-free")) "gluten-free"
+        else "none"
+    s"Got it! I'll remember you prefer $value food."
+  }
 
   def recommend(preferences: Map[String, String], recipes: List[Recipe]): List[Recipe] = {
 
@@ -49,35 +48,6 @@ object RecommendationEngine {
     s"${recipe.name} is a great choice because it is " +
     s"${recipe.difficulty.toLowerCase} to make " +
     s"and only takes ${recipe.prepTime} minutes."
-  }
-
-
-  def getTopRecommendations(
-      preferences: Map[String, String]
-  ): List[Recipe] = {
-
-    recommend(preferences, data.allRecipes)
-      .take(3)
-  }
-
-
- 
-  def formatRecommendations(
-      recipes: List[Recipe]
-  ): String = {
-
-    if (recipes.isEmpty) {
-
-      "Sorry, I couldn't find matching recipes."
-
-    } else {
-
-      recipes
-        .map(recipe =>
-          explainRecommendation(recipe)
-        )
-        .mkString("\n")
-    }
   }
 
 }

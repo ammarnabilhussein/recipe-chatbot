@@ -5,19 +5,34 @@ object coreChatBot{
 
     }
 
-    def handleUserInput(input: String): String = {
+    def handleUserInput(input: String,memory : ConversationState): String = {
         input.toLowerCase match {
+            
             case x if x.contains("hello") || x.contains("hi") => greetUser() // case to greet the user
 
             case x if x.contains("protein") || x.contains("carbs") || x.contains("fat") || x.contains("calories") => generateResponse(x) // case for topic queries
 
-            case x if x.contains("recipe") || x.contains("meal") || x.contains("dish") || x.contains("food") || x.contains("eat") =>  
-                val recommend = parseInput(x)
-                val answer = RecommendationEngine.recommend(recommend,data.allRecipes)
-                answer.map((x : Recipe) => RecommendationEngine.explainRecommendation(x)).mkString("\n")
+            case x if x.contains("recipe") || x.contains("meal") || x.contains("dish") || x.contains("food") || x.contains("eat") ||
+            x.contains("suggest something") || x.contains("what do you recommend") || x.contains("what do you recommend") =>  
+                val prefs = RecommendationEngine.getUserPreferences(memory)
+                val answer = RecommendationEngine.recommend(prefs,data.allRecipes)
+                if (answer.isEmpty) "I couldn't find recipes matching your preferences. Try updating them!"
+                else answer.map(RecommendationEngine.explainRecommendation).mkString("\n")
                 
+            case x if x.contains("vegan") || x.contains("prefer") || x.contains("vegetarian") ||
+             x.contains("gluten-free") || x.contains("dairy-free") || x.contains("nut-free") || x.contains("high-ptotein") || x.contains("low-carb")
+             => RecommendationEngine.updatePreferences(x,memory) //case for preference updates
 
-            case x if x.contains("vegan") || x.contains("prefer") || x.contains("vegetarian") || x.contains("gluten-free") || x.contains("dairy-free") || x.contains("nut-free") => updatePreferences(x) //case for preference updates
+            case x if x.contains("summarize") || x.contains("summary") || x.contains("what have we talked") => conversationMemory.summarizeConversation(memory.history)
+
+            case x if x.contains("topics") || x.contains("what topics") => val topics = conversationMemory.extractTopics(memory.history, List())
+            "We've discussed: " + topics.mkString(", ")
+
+            case x if x.contains("most discussed") || x.contains("popular") => val topics = conversationMemory.getMostDiscussedTopics(memory.history)
+            topics.map(t => s"${t._1}: ${t._2} times").mkString("\n")
+
+            case x if x.contains("recent") || x.contains("last") => val last = conversationMemory.getLastNInteractions(3, memory).map(e => s"You: ${e.userInput}\nMe: ${e.botResponse}")
+            last.mkString("\n---\n")
 
             case _ => "I'm sorry, I didn't understand that. Can you please rephrase your request?" // case for fallbacks
         }
