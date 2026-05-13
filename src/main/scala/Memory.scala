@@ -22,7 +22,7 @@ object conversationMemory{
     }
 
     def detectRepeatedQuery(input : String, history : List[InteractionEntry]): Boolean = {
-        val splitWords = input.split(" ")
+        val splitWords = input.split(" ").toList
         history.filter(x => splitWords.filter(y => x.userInput.contains(y)).nonEmpty).nonEmpty
     }
 

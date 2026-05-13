@@ -12,9 +12,10 @@ object coreChatBot{
             case x if x.contains("protein") || x.contains("carbs") || x.contains("fat") || x.contains("calories") => generateResponse(x) // case for topic queries
 
             case x if x.contains("recipe") || x.contains("meal") || x.contains("dish") || x.contains("food") || x.contains("eat") =>  
-                val rec = parseInput(x)
-                val ans = recommend(rec,allRecipes)
-                ans.map(explainRecommendation).mkString("\n")  //case for recommendation requests
+                val recommend = parseInput(x)
+                val answer = RecommendationEngine.recommend(recommend,data.allRecipes)
+                answer.map((x : Recipe) => RecommendationEngine.explainRecommendation(x)).mkString("\n")
+                
 
             case x if x.contains("vegan") || x.contains("prefer") || x.contains("vegetarian") || x.contains("gluten-free") || x.contains("dairy-free") || x.contains("nut-free") => updatePreferences(x) //case for preference updates
 

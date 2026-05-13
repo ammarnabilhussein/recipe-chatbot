@@ -9,29 +9,17 @@ object RecommendationEngine {
   }
   
 
-  def updatePreferences(
-      preferences: Map[String, String],
-      key: String,
-      value: String
-  ): Map[String, String] = {
-
+  def updatePreferences(preferences: Map[String, String],key: String,value: String): Map[String, String] = {
     preferences + (key -> value)
+
   }
 
 
 
 
-  def recommend(
-      preferences: Map[String, String], 
-      recipes: List[Recipe]
-  ): List[Recipe] = {
+  def recommend(preferences: Map[String, String], recipes: List[Recipe]): List[Recipe] = {
 
-    recipes
-      .filter(recipe =>
-
-        preferences.get("cuisine")
-          .forall(prefCuisine =>
-            recipe.cuisine.equalsIgnoreCase(prefCuisine)
+    recipes.filter(recipe =>preferences.get("cuisine").forall(prefCuisine => recipe.cuisine.equalsIgnoreCase(prefCuisine)
           )
 
         &&
@@ -56,9 +44,7 @@ object RecommendationEngine {
   }
   
 
-  def explainRecommendation(
-      recipe: Recipe
-  ): String = {
+  def explainRecommendation(recipe: Recipe): String = {
 
     s"${recipe.name} is a great choice because it is " +
     s"${recipe.difficulty.toLowerCase} to make " +
