@@ -41,6 +41,8 @@ object Main extends App {
 
       }
 
+      val newPreference = ConversationState(memory.history,updatedPrefs)
+
       val nextInput = StdIn.readLine()
       start(nextInput,conversationMemory.logInteraction(input,response,memory))
     }
