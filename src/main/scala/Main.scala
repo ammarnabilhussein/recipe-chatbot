@@ -24,9 +24,7 @@ object Main extends App {
         case "negative" => "I hope I can cheer you up! "
         case _ => ""
       }
-
-      println(tone + response)
-
+      
       val updatedPrefs : Map[String,String] = input.toLowerCase() match {
       case input if input.contains("vegan") => memory.preferences + ("diet" -> "vegan")
       case input if input.contains("vegetarian") => memory.preferences + ("diet" -> "vegetarian")
@@ -38,6 +36,9 @@ object Main extends App {
 }
 
       val newPreference = ConversationState(memory.history,updatedPrefs)
+
+      println(tone + response)
+
 
       val nextInput = StdIn.readLine()
       start(nextInput,conversationMemory.logInteraction(input,response,memory))

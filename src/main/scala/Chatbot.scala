@@ -8,7 +8,7 @@ object coreChatBot{
     def handleUserInput(input: String,memory : ConversationState): String = {
         input.toLowerCase match {
             
-            case x if x.contains("hello") || x.contains("hi") => greetUser() // case to greet the user
+            case x if (x == "hello") || (x == "hi") || x.startsWith("hello") || x.startsWith("hi") => greetUser() // case to greet the user
 
             case x if x.contains("protein") || x.contains("carbs") || x.contains("fat") || x.contains("calories") => generateResponse(x) // case for topic queries
 

@@ -42,14 +42,14 @@ object conversationMemory{
     def summarizeConversation(history : List[InteractionEntry]): String = {
         val recommendationCounts = history.filter(_.intent == "recommendation").size
         val greetingCounts = history.filter(_.intent == "greeting").size
-        val summary = "We've had " + history.size.toBinaryString + " exchanges."
+        val summary = "We've had " + history.size.toString + " exchanges."
 
         val summaryPart1 = recommendationCounts match {
-            case recommendationCounts if (recommendationCounts > 0) => "You asked for " + recommendationCounts.toBinaryString + " recommendations. "
+            case recommendationCounts if (recommendationCounts > 0) => "You asked for " + recommendationCounts.toString + " recommendations. "
             case _ => summary
         }
         val summaryPart2 = greetingCounts match{
-            case greetingCounts if (greetingCounts > 0) => "We exchanged " + greetingCounts.toBinaryString + " greetings. "
+            case greetingCounts if (greetingCounts > 0) => "We exchanged " + greetingCounts.toString + " greetings. "
             case _ => summary
         }
 
