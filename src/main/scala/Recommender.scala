@@ -49,5 +49,6 @@ object RecommendationEngine {
     s"${recipe.difficulty.toLowerCase} to make " +
     s"and only takes ${recipe.prepTime} minutes."
   }
+  // missing the dietary based on preferences
 
 }

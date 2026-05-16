@@ -46,6 +46,7 @@ object conversationMemory{
         val greetingCounts = history.filter(_.intent == "greeting").size
         val summary = "We've had " + history.size.toString + " exchanges."
 
+        // default case should return "" (significant)
         val summaryPart1 = recommendationCounts match {
             case recommendationCounts if (recommendationCounts > 0) => "You asked for " + recommendationCounts.toString + " recommendations. "
             case _ => summary
@@ -54,6 +55,7 @@ object conversationMemory{
             case greetingCounts if (greetingCounts > 0) => "We exchanged " + greetingCounts.toString + " greetings. "
             case _ => summary
         }
+        // missing the rest of the intents
 
         val finalSummary = summary + summaryPart1 + summaryPart2
         finalSummary

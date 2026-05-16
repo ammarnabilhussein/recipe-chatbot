@@ -16,7 +16,7 @@ object coreChatBot{
             x.contains("suggest something") || x.contains("what do you recommend") || x.contains("what do you recommend") =>  
                 val prefs = RecommendationEngine.getUserPreferences(memory)
                 val answer = RecommendationEngine.recommend(prefs,data.allRecipes)
-                if (answer.isEmpty) "I couldn't find recipes matching your preferences. Try updating them!"
+                if (answer.isEmpty) "I couldn't find recipes matching your preferences. Try updating them!" // should ask about diatry preferences instead and call updatePreferences
                 else answer.map(RecommendationEngine.explainRecommendation).mkString("\n")
                 
             case x if x.contains("vegan") || x.contains("prefer") || x.contains("vegetarian") ||
@@ -26,13 +26,14 @@ object coreChatBot{
             case x if x.contains("summarize") || x.contains("summary") || x.contains("what have we talked") => conversationMemory.summarizeConversation(memory.history)
 
             case x if x.contains("topics") || x.contains("what topics") => val topics = conversationMemory.extractTopics(memory.history, List())
-            "We've discussed: " + topics.mkString(", ")
+            "We've discussed: " + topics.mkString(", ") // extractTopics returns full output, "We've discussed: " is reduntant
 
             case x if x.contains("most discussed") || x.contains("popular") => {
                 val topics = conversationMemory.getMostDiscussedTopics(memory.history)
                 topics.map(t => s"${t._1}: ${t._2} times").mkString("\n")
             }
 
+            // should check for the number of recent interactions (n) asked and pass it instead of passing 3 (significant)
             case x if x.contains("recent") || x.contains("last") => {val last = conversationMemory.getLastNInteractions(3, memory).map(e => s"You: ${e.userInput}\nMe: ${e.botResponse}")
             last.mkString("\n---\n")
             }
