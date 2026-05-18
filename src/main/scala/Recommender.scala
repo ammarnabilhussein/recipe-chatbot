@@ -50,7 +50,7 @@ object RecommendationEngine {
 
     s"${recipe.name} is a great choice because it's ingredients are : " + 
     s"${recipe.ingredients}"+
-    s"and dietary Tags: ${recipe.dietaryTages}"
+    s"and dietary Tags: ${recipe.dietaryTags}"
   }
 
 }

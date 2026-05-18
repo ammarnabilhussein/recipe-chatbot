@@ -4,8 +4,8 @@ object conversationMemory{
         val sequenceNumber = context.history.size + 1
         val timestamp = java.time.LocalDateTime.now().toString
         val intention = userInput.toLowerCase() match  {
-            case userInput if (userInput.contains("hi") || userInput.contains("hello") || userInput.contains("hi")) || userInput.contains("good") => "greeting"
-            case userInput if (userInput.contains("suggest something") || userInput.contains("what do you recommend") || userInput.contains("what do you recommend")) => "recommendation"
+            case x if (x.contains("hi") || x.contains("hello") || x.contains("hi")) || x.contains("good") => "greeting"
+            case x if (x.contains("suggest something") || x.contains("what do you recommend") || x.contains("what do you recommend")) => "recommendation"
             case x if x.contains("vegan") || x.contains("vegetarian") || x.contains("prefer") || x.contains("gluten-free") || 
             x.contains("dairy-free") || x.contains("nut-free") || x.contains("high-ptotein") || x.contains("low-carb") => "preference update"
             case x if x.contains("protein") || x.contains("carbs") || x.contains("fat") || x.contains("calories") => "nutrition query"
@@ -32,7 +32,7 @@ object conversationMemory{
     val stopWords = List("i", "a", "the", "is", "it", "do", "you", "what", "have", "we", "me", "my", "can", "to", "in", "of", "and", "or", "for", "suggest", "recommend", "something", "topics", "discussed")
     val splitWords = input.split(" ").toList.filter(w => w.length > 3 && !stopWords.contains(w.toLowerCase))
     if (splitWords.isEmpty) false
-    else history.filter(x => splitWords.filter(y => x.input.contains(y)).nonEmpty).nonEmpty
+    else history.filter(x => splitWords.filter(y => x.userInput.contains(y)).nonEmpty).nonEmpty
 }
 
     def extractTopics(history : List[InteractionEntry],acc : List[String]): List[String] = history match{
@@ -44,6 +44,13 @@ object conversationMemory{
     def summarizeConversation(history : List[InteractionEntry]): String = {
         val recommendationCounts = history.filter(_.intent == "recommendation").size
         val greetingCounts = history.filter(_.intent == "greeting").size
+        val preferenceUpdateCounts = history.filter(_.intent == "preference update").size
+        val nutritionQueryCounts = history.filter(_.intent == "nutrition query").size
+        val discussedTopicsCounts = history.filter(_.intent == "discussed topics so far").size
+        val mostDiscussedCounts = history.filter(_.intent == "most discussed").size
+        val generalCounts = history.filter(_.intent == "general").size
+
+
         val summary = "We've had " + history.size.toString + " exchanges."
 
         val greeting = greetingCounts match{
