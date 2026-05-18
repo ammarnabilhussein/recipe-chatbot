@@ -32,7 +32,7 @@ object conversationMemory{
     val stopWords = List("i", "a", "the", "is", "it", "do", "you", "what", "have", "we", "me", "my", "can", "to", "in", "of", "and", "or", "for", "suggest", "recommend", "something", "topics", "discussed")
     val splitWords = input.split(" ").toList.filter(w => w.length > 3 && !stopWords.contains(w.toLowerCase))
     if (splitWords.isEmpty) false
-    else history.filter(x => splitWords.filter(y => x.userInput.contains(y)).nonEmpty).nonEmpty
+    else history.filter(x => splitWords.filter(y => x.input.contains(y)).nonEmpty).nonEmpty
 }
 
     def extractTopics(history : List[InteractionEntry],acc : List[String]): List[String] = history match{
@@ -46,18 +46,40 @@ object conversationMemory{
         val greetingCounts = history.filter(_.intent == "greeting").size
         val summary = "We've had " + history.size.toString + " exchanges."
 
-        // default case should return "" (significant)
-        val summaryPart1 = recommendationCounts match {
-            case recommendationCounts if (recommendationCounts > 0) => "You asked for " + recommendationCounts.toString + " recommendations. "
-            case _ => summary
-        }
-        val summaryPart2 = greetingCounts match{
+        val greeting = greetingCounts match{
             case greetingCounts if (greetingCounts > 0) => "We exchanged " + greetingCounts.toString + " greetings. "
-            case _ => summary
+            case _ => ""
         }
-        // missing the rest of the intents
+        val recommendation = recommendationCounts match {
+            case recommendationCounts if (recommendationCounts > 0) => "You asked for " + recommendationCounts.toString + " recommendations. "
+            case _ => ""
+        }
+        val preferences = preferenceUpdateCounts match {
+            case preferenceUpdateCounts if (preferenceUpdateCounts > 0) => "You updated your preferences " + preferenceUpdateCounts.toString + " times. "
+            case _ => ""
+        }
 
-        val finalSummary = summary + summaryPart1 + summaryPart2
+        val nutrition = nutritionQueryCounts match {
+            case nutritionQueryCounts if (nutritionQueryCounts > 0) => "We discussed nutrition information " + nutritionQueryCounts.toString + " times. "
+            case _ => ""
+        }
+
+        val discussedTopics = discussedTopicsCounts match {
+            case discussedTopicsCounts if (discussedTopicsCounts > 0) => "We discussed " + discussedTopicsCounts.toString + " different topics. "
+            case _ => ""
+        }
+
+        val mosstdiscussed = mostDiscussedCounts match {
+            case mostDiscussedCounts if (mostDiscussedCounts > 0) => "You asked about the most discussed items " + mostDiscussedCounts.toString + " times. "
+            case _ => ""
+        }
+
+        val general = generalCounts match {
+            case generalCounts if (generalCounts > 0) => "We had " + generalCounts.toString + " general conversations. "
+            case _ => ""
+        }
+
+        val finalSummary = summary + greeting + recommendation + preferences + nutrition + discussedTopics + mosstdiscussed + general
         finalSummary
     }
 

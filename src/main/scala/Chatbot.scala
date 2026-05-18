@@ -26,7 +26,7 @@ object coreChatBot{
             case x if x.contains("summarize") || x.contains("summary") || x.contains("what have we talked") => conversationMemory.summarizeConversation(memory.history)
 
             case x if x.contains("topics") || x.contains("what topics") => val topics = conversationMemory.extractTopics(memory.history, List())
-            "We've discussed: " + topics.mkString(", ") // extractTopics returns full output, "We've discussed: " is reduntant
+            topics.mkString(", ")
 
             case x if x.contains("most discussed") || x.contains("popular") => {
                 val topics = conversationMemory.getMostDiscussedTopics(memory.history)

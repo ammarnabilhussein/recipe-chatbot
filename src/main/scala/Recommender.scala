@@ -12,6 +12,9 @@ object RecommendationEngine {
         if (input.contains("vegan")) "vegan"
         else if (input.contains("vegetarian")) "vegetarian"
         else if (input.contains("gluten-free")) "gluten-free"
+        else if (input.contains("dairy-free")) "dairy-free"
+        else if (input.contains("high-protein")) "high-protein"
+        else if (input.contains("low-carb")) "low-carb"
         else "none"
     s"Got it! I'll remember you prefer $value food."
   }
@@ -45,10 +48,9 @@ object RecommendationEngine {
 
   def explainRecommendation(recipe: Recipe): String = {
 
-    s"${recipe.name} is a great choice because it is " +
-    s"${recipe.difficulty.toLowerCase} to make " +
-    s"and only takes ${recipe.prepTime} minutes."
+    s"${recipe.name} is a great choice because it's ingredients are : " + 
+    s"${recipe.ingredients}"+
+    s"and dietary Tags: ${recipe.dietaryTages}"
   }
-  // missing the dietary based on preferences
 
 }

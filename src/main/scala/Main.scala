@@ -39,7 +39,7 @@ object Main extends App {
 
 
       val nextInput = StdIn.readLine()
-      start(nextInput,conversationMemory.logInteraction(input,response,memory)) // should pass newPreference not memory (significant)
+      start(nextInput,conversationMemory.logInteraction(input,response,newPreference))
     }
 
   }
